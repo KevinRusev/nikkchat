@@ -21,3 +21,13 @@ ever touches a server.
 - WebRTC for peer-to-peer voice and video calls
 - Web Crypto API (AES-256-GCM)
 - PWA with service worker
+
+## Feature highlights
+
+- End-to-end encrypted media (AES-256-GCM, per-blob ephemeral keys)
+- Optional EXIF stripping
+- Real-time messaging with presence and typing indicators
+- WebRTC voice and video calls
+- Email / Google / Apple / Microsoft / Phone OTP sign-in
+- Public + private collections
+- PWA install on Android, iPhone, and desktop
