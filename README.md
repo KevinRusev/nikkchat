@@ -1,6 +1,6 @@
 # NikkChat
 
-**Encrypted messaging, voice & video calls, and media sharing.**
+****Encrypted messaging, voice and video calls, and media sharing.****
 Live at [nikkchat.com](https://nikkchat.com).
 
 > NikkChat is a closed-source product. This repository is a public case study
