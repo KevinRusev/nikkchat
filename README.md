@@ -1,6 +1,6 @@
 # NikkChat
 
-****Encrypted messaging, voice and video calls, and media sharing.****
+**Encrypted messaging, voice & video calls, and media sharing.**
 Live at [nikkchat.com](https://nikkchat.com).
 
 > NikkChat is a closed-source product. This repository is a public case study
@@ -31,3 +31,9 @@ ever touches a server.
 - Email / Google / Apple / Microsoft / Phone OTP sign-in
 - Public + private collections
 - PWA install on Android, iPhone, and desktop
+
+## Documentation
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - system overview and data flow
+- [`docs/SECURITY.md`](docs/SECURITY.md) - encryption model and threat model
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) - shipped and planned features
