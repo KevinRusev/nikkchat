@@ -1,6 +1,6 @@
 # Architecture
 
-High-level overview of how NikkChat is put together.
+This document describes how NikkChat is put together at a high level.
 
 ## Stack
 
