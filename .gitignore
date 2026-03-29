@@ -1,4 +1,10 @@
 node_modules/
 dist/
 .env
+.env.local
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+_seed.ps1
+*.log
