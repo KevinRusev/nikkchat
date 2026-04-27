@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="brand/logo-256.png" alt="NikkChat" width="160" height="160" />
+
 # NikkChat
 
 **Encrypted messaging, voice & video calls, and media sharing.**
