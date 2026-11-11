@@ -15,6 +15,7 @@ What's shipped and what's next.
 - [x] Replies, reactions and edits
 - [x] Delivered and read ticks
 - [x] Typing and online status, with a switch to hide online status
+- [x] Search inside a conversation, done on the device
 - [x] Photos redrawn to WebP before upload; optional second metadata pass
 - [x] Lightbox and media viewer with swipe; save to device
 - [x] Voice and video calls, device to device (WebRTC)
@@ -24,17 +25,27 @@ What's shipped and what's next.
 - [x] Sign out of all devices; account deletion
 - [x] Custom domain at nikkchat.com
 - [x] November 2026: new brand and site, and security rules that limit every chat, its
-      media, its typing state and its calls to the two people in it
+      media, its typing state and its calls to the people in it
+- [x] November 2026: end-to-end encryption for messages and media, with a recovery code,
+      safety codes, and a mark on anything that arrives unencrypted
+- [x] November 2026: group chats of up to 50, encrypted, with a new key when someone leaves
+- [x] November 2026: a block list only its owner can read
+
+## Built, switched on separately
+
+Each needs a key from an outside service before it goes live.
+
+- [ ] Notifications while the app is closed (web push through Firebase Cloud Messaging)
+- [ ] A relay so calls connect on networks that block direct connections (Cloudflare TURN)
 
 ## Next
 
-- [ ] End-to-end encryption for messages and media
-- [ ] Notifications while the app is closed
-- [ ] A relay (TURN) server so calls connect on networks that block direct connections
-- [ ] Lock the block list away from other accounts
+- [ ] Forward secrecy
+- [ ] A notice in the conversation when someone is added to a group, and a safety code for
+      groups
 - [ ] Erase stored files when a message or conversation is deleted
-- [ ] Group chats
-- [ ] Search inside a chat
+- [ ] End-to-end encrypted collections
+- [ ] Group calls, and typing indicators in groups
 
 ## Later
 
