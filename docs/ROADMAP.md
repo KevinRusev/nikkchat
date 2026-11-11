@@ -1,49 +1,50 @@
 # Roadmap
 
-A living list of what's shipped and what's next.
+What's shipped and what's next.
 
 ## Shipped
 
-- [x] Email/password auth + verification email
-- [x] Google / Apple / Microsoft OAuth sign-in
-- [x] Phone OTP sign-in
-- [x] User profiles with @tag, avatar, bio
-- [x] In-browser avatar cropping
+- [x] Email and password sign-up with a verification email
+- [x] Google and Microsoft sign-in
+- [x] Phone number verified by SMS at sign-up; password reset by email link or SMS code
+- [x] Password check against known leaks (Have I Been Pwned)
+- [x] Profiles with @username, photo and bio; in-browser avatar crop
+- [x] Find people by name or @username; invite link and QR code
 - [x] One-to-one chats over Firestore
-- [x] Real-time presence + typing indicators (RTDB)
-- [x] Read receipts
-- [x] Image / video / voice message uploads
-- [x] Client-side AES-256-GCM encryption for all media
-- [x] Optional EXIF stripping
-- [x] Lightbox + full media viewer with swipe
-- [x] Save-to-device for received media
-- [x] WebRTC peer-to-peer voice calls
-- [x] WebRTC peer-to-peer video calls
-- [x] Public + private collections
-- [x] Share collections via link or QR
-- [x] PWA install for Android, iOS, desktop
-- [x] Service worker with offline fallback
+- [x] Photos, videos and voice notes
+- [x] Replies, reactions and edits
+- [x] Delivered and read ticks
+- [x] Typing and online status, with a switch to hide online status
+- [x] Photos redrawn to WebP before upload; optional second metadata pass
+- [x] Lightbox and media viewer with swipe; save to device
+- [x] Voice and video calls, device to device (WebRTC)
+- [x] Blocking, including calls
+- [x] Collections, private or public
+- [x] Installable PWA for Android, iPhone and desktop, with an offline app shell
+- [x] Sign out of all devices; account deletion
 - [x] Custom domain at nikkchat.com
+- [x] November 2026: new brand and site, and security rules that limit every chat, its
+      media, its typing state and its calls to the two people in it
 
-## In progress
+## Next
 
-- [ ] Group chats (3-50 members)
-- [ ] Message search across own chats
-- [ ] Reply / quote a specific message
-- [ ] Reactions on messages
+- [ ] End-to-end encryption for messages and media
+- [ ] Notifications while the app is closed
+- [ ] A relay (TURN) server so calls connect on networks that block direct connections
+- [ ] Lock the block list away from other accounts
+- [ ] Erase stored files when a message or conversation is deleted
+- [ ] Group chats
+- [ ] Search inside a chat
 
-## Planned
+## Later
 
-- [ ] True end-to-end encryption for text (Signal-style key exchange)
-- [ ] TURN relay so calls work behind symmetric NATs
-- [ ] TOTP 2FA
-- [ ] Native iOS app (Capacitor wrapper around the PWA)
-- [ ] Disappearing messages (per-chat retention setting)
-- [ ] Voice rooms (multi-party audio)
+- [ ] Two-factor sign-in (TOTP)
+- [ ] Disappearing messages
+- [ ] Native wrapper for the app stores
 
 ## Won't do (on purpose)
 
-- Public feed / discovery / "explore" tab. NikkChat is for people you know.
-- Follower counts / social graph virality.
+- A public feed, discovery or an "explore" tab. NikkChat is for people you know.
+- Follower counts.
 - Ads, analytics SDKs, third-party trackers.
 - Selling user data. Ever.
