@@ -230,11 +230,11 @@ flowchart LR
 - **208 rule checks** against the Firebase emulators, as four accounts: two who share a chat,
   one who doesn't, and one who is only ever in groups. Each line is something the rules must
   allow or refuse.
-- **A run of the real screens as three people in separate browsers**, 39 steps: sign in, get
-  keys, save a recovery code, chat, edit, react, send a photo, save it to a collection, unlock
-  on a new browser with the code, call, block, make a group, remove someone, leave, then
-  delete the group, the chat and the account. A single "permission denied" in any browser
-  fails the run.
+- **A run of the real screens as three people in separate browsers**, 40 steps: sign in, get
+  keys, save a recovery code, chat, edit, react, send a photo and a voice note, save to a
+  collection, unlock on a new browser with the code, call, block, make a group, remove
+  someone, leave, then delete the group, the chat and the account. A single "permission
+  denied" in any browser fails the run.
 - **The same run reads what the server stored.** It fails if a message's text, a preview or a
   file name is there in the clear, or if someone removed from a group is handed the next key.
 - **And it writes to the server directly**, the way someone with access to it could. Text
