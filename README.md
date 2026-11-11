@@ -33,7 +33,7 @@ It is **not end-to-end encrypted**, and nothing here says it is. What is protect
 what isn't yet, is written down in [`docs/SECURITY.md`](docs/SECURITY.md) and on
 [nikkchat.com/security](https://nikkchat.com/security).
 
-<img src="screenshots/site-home.png" alt="The nikkchat.com homepage: the headline Chat without an app store, beside a working chat with Jonas" />
+<img src="screenshots/site-home.png" alt="The nikkchat.com homepage: the headline Chat without an app store above a working chat with Jonas, in front of Burgas at night printed in blue" />
 
 ## Screenshots
 
