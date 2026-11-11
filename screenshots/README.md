@@ -7,14 +7,18 @@ made up; nobody's real chats are shown.
 |---|---|
 | `site-home.png` | The nikkchat.com homepage (1440 x 900) |
 | `app-desktop.png` | The app in a desktop browser: chat list and an open conversation (1440 x 900) |
-| `01-home.png` | Chat list with unread and online marks |
+| `01-home.png` | Chat list: a group, unread and online marks, the reminder to save the recovery code |
 | `02-chat.png` | An open chat: photo, reaction, voice note, reply, a logged call |
 | `03-call.png` | Incoming video call |
 | `04-collections.png` | Collections of saved photos |
 | `05-profile.png` | A profile with its @username, bio and public collections |
 | `06-pwa-install.png` | The install guide for iPhone, opened from Settings |
+| `07-group.png` | A group chat, each sender named |
+| `08-encryption.png` | The encryption sheet of a chat, with the safety code two people compare |
+| `09-recovery-code.png` | The recovery code, as it is shown once |
 
-Phone captures are 780 x 1690 (a 390 x 845 viewport at 2x).
+Phone captures are 780 x 1690 (a 390 x 845 viewport at 2x). The safety code and the recovery
+code in `08` and `09` belong to a sample account that existed only for the capture.
 
 ## Photos inside the captures
 
@@ -29,6 +33,7 @@ who shared them:
 | [Apartment towers](https://commons.wikimedia.org/w/index.php?curid=71141807) | Liilia Moroz | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | `01-home.png`, `02-chat.png`, `03-call.png`, `app-desktop.png` |
 | [River at dusk](https://commons.wikimedia.org/wiki/File:Moscow,_Maryino_District_and_Moskva_River_at_night,_Dusk_afterglow,_Twilight,_Russia.jpg) | Vyacheslav Argenberg | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | `04-collections.png`, `05-profile.png` |
 | [Montag-Abend im Block](https://www.flickr.com/photos/93212986@N03/31129456156) | Casey Hugelfink | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | `04-collections.png` |
+| [Vertical retirement home](https://www.flickr.com/photos/26809429@N02/3221575849) | rutlo | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `07-group.png` |
 
 The captures that show a CC BY-SA photo are shared under that photo's licence.
 
