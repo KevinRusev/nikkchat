@@ -18,21 +18,18 @@ Phone captures are 780 x 1690 (a 390 x 845 viewport at 2x).
 
 ## Photos inside the captures
 
-The sample photos are public-domain (CC0) images, cropped. Thank you to the people who
-shared them:
+The sample photos are free-licensed pictures, cropped or resized. Thank you to the people
+who shared them:
 
-| Photo | By |
-|---|---|
-| [Sunset over the sea near Sozopol 1](https://commons.wikimedia.org/wiki/File:Sunset_over_the_sea_near_Sozopol_1.jpg) | Ivano Giambattista |
-| [View from the shores near Sozopol](https://wordpress.org/photos/photo/87063d1d15/) | Nick Krastev |
-| [Ferris wheel night](https://www.rawpixel.com/image/3286001/free-photo-image-france-amusement-park-cc0) | rawpixel |
-| [London Night Sky Tower Blocks](https://commons.wikimedia.org/w/index.php?curid=71318382) | Stephan Guttinger |
+| Photo | By | Licence | Seen in |
+|---|---|---|---|
+| [Window Front at Night](https://commons.wikimedia.org/wiki/File:Window_Front_at_Night_374889.jpg) | Matthew Henry | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | `site-home.png`, `brand/social-preview.png` (printed in one colour) |
+| [Ferris wheel night](https://www.rawpixel.com/image/3286001/free-photo-image-france-amusement-park-cc0) | rawpixel | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | `site-home.png`, `brand/social-preview.png` |
+| [London Night Sky Tower Blocks](https://commons.wikimedia.org/w/index.php?curid=71318382) | Stephan Guttinger | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | `site-home.png`, `02-chat.png`, `app-desktop.png` |
+| [Apartment towers](https://commons.wikimedia.org/w/index.php?curid=71141807) | Liilia Moroz | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | `01-home.png`, `02-chat.png`, `03-call.png`, `app-desktop.png` |
+| [River at dusk](https://commons.wikimedia.org/wiki/File:Moscow,_Maryino_District_and_Moskva_River_at_night,_Dusk_afterglow,_Twilight,_Russia.jpg) | Vyacheslav Argenberg | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | `04-collections.png`, `05-profile.png` |
+| [Montag-Abend im Block](https://www.flickr.com/photos/93212986@N03/31129456156) | Casey Hugelfink | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | `04-collections.png` |
 
-The homepage capture also shows
-[Night Panorama of Burgas](https://commons.wikimedia.org/wiki/File:Night_Panorama_of_Burgas.jpg)
-by Nasomatrix at Bulgarian Wikipedia,
-[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), cropped and printed in one
-colour. `site-home.png` and `brand/social-preview.png` include that adaptation and are
-shared under the same licence.
+The captures that show a CC BY-SA photo are shared under that photo's licence.
 
 Everything else in the captures is NikkChat's own interface.
