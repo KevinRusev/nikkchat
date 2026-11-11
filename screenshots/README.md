@@ -28,4 +28,11 @@ shared them:
 | [Ferris wheel night](https://www.rawpixel.com/image/3286001/free-photo-image-france-amusement-park-cc0) | rawpixel |
 | [London Night Sky Tower Blocks](https://commons.wikimedia.org/w/index.php?curid=71318382) | Stephan Guttinger |
 
+The homepage capture also shows
+[Night Panorama of Burgas](https://commons.wikimedia.org/wiki/File:Night_Panorama_of_Burgas.jpg)
+by Nasomatrix at Bulgarian Wikipedia,
+[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), cropped and printed in one
+colour. `site-home.png` and `brand/social-preview.png` include that adaptation and are
+shared under the same licence.
+
 Everything else in the captures is NikkChat's own interface.
