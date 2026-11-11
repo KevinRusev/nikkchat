@@ -1,107 +1,138 @@
 # Architecture
 
-This document describes how NikkChat is put together at a high level. The actual
-source code is private; this is a design overview for review.
+How NikkChat is put together. The source code is private; this is a design overview for
+review.
 
 ## High level
 
-NikkChat is a single-page PWA in the browser talking to a Firebase backend. There
-is no custom server. Everything that needs to be authoritative (auth, persistence,
-storage, realtime fan-out) is delegated to Firebase services. Everything that
-needs to be private (media, in particular) is encrypted client-side first.
+NikkChat is a single-page PWA in the browser talking to Firebase. There is no server of my
+own. Auth, persistence, storage and realtime fan-out are Firebase services, and Firebase's
+security rules decide who can read and write what.
 
 ```
 [ Browser PWA ]  <->  [ Firebase Auth ]
        |
-       | (Firestore SDK over WSS)
+       | (Firestore SDK)
        v
-[ Firestore: users, chats, messages, collections ]
+[ Firestore: users, usernames, chats, messages, collections ]
        |
-       | (RTDB SDK over WSS)
+       | (Realtime Database SDK)
        v
-[ Realtime DB: presence, typing, call signaling ]
+[ Realtime Database: presence, typing, call setup ]
        |
        | (Storage SDK over HTTPS)
        v
-[ Cloud Storage: encrypted blobs only ]
+[ Cloud Storage: photos, videos, voice notes, avatars ]
 ```
+
+Nothing is end-to-end encrypted. Data is encrypted in transit and at rest by the platform;
+see [SECURITY.md](SECURITY.md) for exactly what that does and doesn't cover.
 
 ## Data model
 
 ### `users/{uid}`
-Public profile fields (display name, @tag, avatar URL, bio). Avatars are
-plaintext public assets - they are deliberately not encrypted because they are
-intended to be visible.
+The profile other people see: display name, @username, avatar URL, bio, plus the owner's
+settings. Readable by signed-in accounts. Phone numbers are not stored here; they stay in
+Firebase Auth.
+
+### `tags/{username}`
+The username registry: one document per @username, pointing at its owner. It makes
+usernames unique and lets an invite link (`nikkchat.com/u/<name>`) resolve to a person.
 
 ### `chats/{chatId}`
-A chat envelope: participants, last message preview, unread counters per user.
-Used as a denormalized index so the chat list can render without joins.
+A chat between two people. Its id is their two user ids, sorted and joined with `_`, so
+there is exactly one chat per pair and the id itself says who belongs to it. The document
+holds the two members, the last message preview and its time, which the chat list is built
+from without reading any messages.
 
-### `chats/{chatId}/messages/{msgId}`
-Individual messages. For text, the content is stored as-is in Firestore (Firestore
-data is encrypted at rest by Google but not E2E). For media, only the **storage
-path** and the **media key** travel through Firestore; the actual bytes live in
-Cloud Storage as ciphertext.
+### `chats/{chatId}/messages/{messageId}`
+One message: sender, type (text, photo, video, voice note, or a logged call), the text or the
+media link, the time, who it has been delivered to and read by, reactions, and the message it
+replies to if any.
 
 ### `collections/{collectionId}`
-A user-curated set of media references. May be public (link/QR shareable) or
-private. Each item points back to the encrypted blob and includes the media key.
+A set of saved photos and videos with an owner, a name, a cover and a visibility: private,
+or public (shown on the owner's profile).
 
-### Realtime DB
+### Realtime Database
 
 | Path | Purpose |
 |---|---|
-| `presence/{uid}` | online/offline + last-seen, written via `onDisconnect` |
-| `typing/{chatId}/{uid}` | typing indicator with TTL |
-| `calls/{callId}` | WebRTC SDP offers/answers + ICE candidates |
+| `presence/{uid}` | online and last seen, cleared through `onDisconnect`; nothing is written while the owner has online status switched off |
+| `typing/{chatId}/{uid}` | typing indicator |
+| `calls/{callId}` | call setup: the offer, the answer, connection candidates and the call's status |
 
-## Encryption flow (media)
+## How a photo travels
 
-1. User picks a file (image / video / voice).
-2. Optional: EXIF metadata is stripped via `exifr` if the user has the toggle on.
-3. A fresh AES-256-GCM key + 96-bit IV are generated via `crypto.subtle`.
-4. The file is encrypted in the browser; the resulting ciphertext is uploaded
-   to Cloud Storage as `application/octet-stream`.
-5. The base64-encoded raw key is attached to the message envelope in Firestore.
-6. Recipients fetch the ciphertext, import the key, and decrypt locally.
-7. Decrypted blobs are kept in an in-memory + IndexedDB cache so scrolling
-   doesn't re-decrypt.
+1. The user picks a photo.
+2. The browser redraws it onto a canvas and saves it as WebP. That makes it smaller and
+   leaves the embedded location and camera details behind. A setting adds a second pass over
+   the metadata. If the browser can't redraw the file, it is sent as it is.
+3. The file uploads to Cloud Storage under the chat's own folder. The storage rules only
+   accept it from one of the chat's two members.
+4. The message document gets the file's download link.
+5. The other person's app shows the photo from that link.
 
-The server never sees the key in unwrapped form because the key lives in
-Firestore (which is owned by the same Firebase project, not a separate trust
-boundary - see [SECURITY.md](SECURITY.md) for what this does and doesn't protect
-against).
+Videos and voice notes take the same route without the redraw.
 
 ## Calls (WebRTC)
 
-Calls are peer-to-peer. The Firebase stack is used **only for signaling**:
+Calls are device to device. Firebase is used only to set them up:
 
-1. Caller creates an `RTCPeerConnection`, generates an SDP offer.
-2. Offer is written to `calls/{callId}/offer` in Realtime DB.
-3. Callee subscribes, gets the offer, generates an answer, writes it back.
-4. Both sides exchange ICE candidates via `calls/{callId}/candidates/{caller|callee}`.
-5. Once ICE succeeds, audio/video flows directly between the peers.
-6. Hangup writes a `status: "ended"` field; both sides tear down.
+1. The caller creates an `RTCPeerConnection` and an offer, and writes a call record
+   addressed to the other person under `calls/{callId}`.
+2. Each signed-in device listens only for call records addressed to its own account. The
+   callee's device sees the record and shows the incoming-call screen, unless the caller is
+   blocked.
+3. On accept, the callee writes an answer, and both sides exchange connection candidates
+   through the same record.
+4. Once a direct route is found, sound and picture flow between the two devices.
+5. Hanging up ends the call on both sides, logs it in the chat and removes the record. A
+   call nobody answers times out.
 
-If P2P fails (symmetric NAT), the call simply doesn't connect - I'm not running
-a TURN relay yet. That's on the roadmap.
+Devices find their public address through a STUN server. There is no TURN relay, so if a
+network blocks direct connections the call doesn't connect. That is on the roadmap.
+
+## Security rules
+
+With no server in between, the rules are the access control:
+
+- A chat, its messages, its media folder, its typing state and its call records are open
+  only to its two members. For chats with the current id format the rules read the members
+  straight from the id.
+- Only a message's sender can edit it; the other member can mark it read or react.
+- A collection is readable by its owner, and by other signed-in accounts only while public.
+
+They are tested two ways: 120 allow/deny checks against the Firebase emulators, and a
+scripted run of the real screens in two browsers at once that fails on any "permission
+denied".
 
 ## PWA
 
-The app is built with `vite-plugin-pwa`. The service worker:
-- pre-caches the app shell so cold start is instant
-- uses a network-first strategy for Firestore/Storage SDK fetches
-- shows a cached "you're offline" view of the chat list when the network is gone
+Built with `vite-plugin-pwa`. The service worker:
 
-A custom install prompt component watches `beforeinstallprompt` on Chromium and
-shows platform-specific instructions on iOS Safari (which doesn't fire that event).
+- caches the app shell, so a repeat visit starts without the network
+- installs new versions by itself and reloads open tabs onto them
+- keeps a cache of media already viewed
+
+An install prompt handles `beforeinstallprompt` on Chromium browsers and shows written steps
+on iOS Safari, which has no such event.
+
+Each screen except sign-in is its own chunk, so the public homepage doesn't load code that
+only the sign-up form needs.
+
+## Cloud Functions
+
+Three small functions: one sends the account emails (verification, password reset) through
+Resend, one signs an account out of every device, and one cleans up after an account is
+deleted.
 
 ## Why this stack
 
 | Choice | Reason |
 |---|---|
-| Firebase over a custom backend | Solo dev. Auth + DB + storage + realtime out of the box, all priced predictably for this scale. |
-| Firestore + RTDB together | Firestore's reactive queries are great for the chat list. RTDB's lower-latency presence + `onDisconnect` is unbeatable. |
-| Web Crypto over a JS library | First-party, audited, fast (uses native subtle crypto under the hood), no supply-chain risk. |
-| WebRTC over RTDB signaling | One less service to run. Signaling traffic is tiny. |
-| PWA over native | Solo dev velocity. One codebase, instant updates, every platform. App stores can come later. |
+| Firebase over a custom backend | Solo developer. Auth, database, storage and realtime out of the box, priced predictably at this scale. |
+| Firestore + Realtime Database together | Firestore's live queries suit the chat list and messages. Realtime Database's lower latency and `onDisconnect` suit presence, typing and call setup. |
+| Rules as the backend | No server to run or patch, as long as the rules are strict and tested. |
+| WebRTC with Realtime Database for setup | One less service to run. Call media never touches a server. |
+| PWA over native | One codebase, instant updates, every platform. App stores can come later. |

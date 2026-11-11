@@ -1,15 +1,11 @@
 <div align="center">
 
-<img src="brand/logo-256.png" alt="NikkChat" width="160" height="160" />
+<img src="brand/logo-256.png" alt="NikkChat" width="96" height="96" />
 
 # NikkChat
 
-**Encrypted messaging, voice & video calls, and media sharing.**
-**Installable on Android, iPhone, and desktop.**
-
-[![Live](https://img.shields.io/badge/Live_at-nikkchat.com-1f6feb?style=for-the-badge)](https://nikkchat.com)
-[![Status](https://img.shields.io/badge/Status-In_Production-3fb950?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-Proprietary-d73a49?style=for-the-badge)](LICENSE)
+**A messenger that runs in the browser and installs to the home screen.**<br/>
+One-to-one chats, photos, voice notes, and voice and video calls. Live at [nikkchat.com](https://nikkchat.com).
 
 </div>
 
@@ -24,92 +20,111 @@
 
 ## What it is
 
-NikkChat is a privacy-first messenger I built and ship at [**nikkchat.com**](https://nikkchat.com).
-It's a Progressive Web App that installs on any device, runs without an app store, and treats
-media as **end-to-end encrypted by default** — every image, video, and voice message is
-encrypted client-side before it ever touches a server.
+NikkChat is a messenger I built and run at [**nikkchat.com**](https://nikkchat.com). It is a
+Progressive Web App: open the site, add it to your home screen, and it behaves like an
+installed app on iPhone, Android and desktop, with no app store in between.
 
-It also handles **peer-to-peer voice and video calls** over WebRTC, supports **passwordless
-sign-in via Google / Apple / Microsoft / phone OTP**, and keeps the social graph deliberately
-minimal — there's no public feed, no follower count, no algorithm. Just people you know.
+People find each other by name, @username, an invite link or its QR code, never by phone
+number. Chats are between two people: text, photos, videos and voice notes, with replies,
+reactions, edits and read ticks. Voice and video calls connect device to device over WebRTC.
+There is no feed, no follower count and no ads.
+
+It is **not end-to-end encrypted**, and nothing here says it is. What is protected today, and
+what isn't yet, is written down in [`docs/SECURITY.md`](docs/SECURITY.md) and on
+[nikkchat.com/security](https://nikkchat.com/security).
+
+<img src="screenshots/site-home.png" alt="The nikkchat.com homepage: the headline Chat without an app store, beside a working chat with Jonas" />
 
 ## Screenshots
 
-> Real screenshots from production (`nikkchat.com`).
+Captured from the app running on sample conversations. The names and messages are made up.
+
+<img src="screenshots/app-desktop.png" alt="NikkChat in a desktop browser: the chat list beside an open conversation" />
 
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src="screenshots/01-home.png" alt="Home screen" /><br/>
-      <sub><b>Chat list with presence indicators</b></sub>
+      <img src="screenshots/01-home.png" alt="Chat list" /><br/>
+      <sub><b>Chat list, with unread and online marks</b></sub>
     </td>
     <td align="center" width="33%">
-      <img src="screenshots/02-chat.png" alt="Active chat" /><br/>
-      <sub><b>Encrypted media inside a chat</b></sub>
+      <img src="screenshots/02-chat.png" alt="An open chat" /><br/>
+      <sub><b>A chat: photo, reaction, voice note, reply, a logged call</b></sub>
     </td>
     <td align="center" width="33%">
-      <img src="screenshots/03-call.png" alt="Video call" /><br/>
-      <sub><b>WebRTC peer-to-peer video call</b></sub>
+      <img src="screenshots/03-call.png" alt="Incoming video call" /><br/>
+      <sub><b>Incoming video call</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="33%">
       <img src="screenshots/04-collections.png" alt="Collections" /><br/>
-      <sub><b>Public / private media collections</b></sub>
+      <sub><b>Collections of saved photos, public or private</b></sub>
     </td>
     <td align="center" width="33%">
       <img src="screenshots/05-profile.png" alt="Profile" /><br/>
-      <sub><b>Profile with @tag and avatar crop</b></sub>
+      <sub><b>A profile with its @username and public collections</b></sub>
     </td>
     <td align="center" width="33%">
-      <img src="screenshots/06-pwa-install.png" alt="PWA install" /><br/>
-      <sub><b>Installable PWA on iOS / Android / desktop</b></sub>
+      <img src="screenshots/06-pwa-install.png" alt="Install guide" /><br/>
+      <sub><b>The install guide for iPhone</b></sub>
     </td>
   </tr>
 </table>
 
-## Feature highlights
+The photos inside the captures are public-domain images; see
+[`screenshots/README.md`](screenshots/README.md) for who took them.
 
-### Privacy & security
-- **End-to-end encrypted media** — every image, video, and voice message is encrypted in the
-  browser with a unique AES-256-GCM key before upload. The server only ever stores ciphertext.
-- **Per-blob ephemeral keys** — a fresh 256-bit key + 96-bit IV is generated for each upload,
-  exported as base64, and delivered alongside the message envelope. The Web Crypto API does the
-  heavy lifting; no third-party crypto libraries.
-- **Optional EXIF stripping** — toggle metadata removal before upload so location/camera/timestamps
-  don't leak to the recipient.
-- **Reauthentication for sensitive actions** — destructive actions (delete account, change email,
-  rotate password) require fresh credentials.
-- **No public feed, no follower system, no algorithm** — minimal social graph by design.
+## What it does
 
-### Real-time
-- **Real-time messaging** over Firestore with Realtime Database for presence and typing indicators.
-- **Read receipts** and **last-seen** with privacy-respecting opt-outs.
-- **WebRTC peer-to-peer voice and video calls** with ringer notifications, accept/decline UI, and
-  graceful failure handling for offline peers.
+### Chats
+- One-to-one chats over Firestore: text, photos, videos and voice notes.
+- Replies, reactions, edits, delivered and read ticks.
+- Typing and online status over Realtime Database. Online status can be switched off, and
+  while it is off nothing is published.
 
-### Auth
-- Email/password with verification email and **password strength scoring**.
-- **Google**, **Apple**, and **Microsoft** OAuth.
-- **Phone OTP** with anti-abuse SMS cooldown.
-- Forgot-password flow with custom auth-action handling.
+### Calls
+- Voice and video over WebRTC, device to device. Firebase only carries the call setup; sound
+  and picture never pass through a NikkChat server.
+- An incoming-call screen with accept and decline. Unanswered calls time out, and a blocked
+  account can't make your phone ring.
 
-### Media & UX
-- **Image / video / voice message** upload with progress, retries, and thumbnail generation.
-- **Avatar cropping** in-browser with a circular crop UI.
-- **Lightbox** and full **media viewer** with swipe navigation.
-- **Save to device** for any received media.
-- **Decrypted media cache** to avoid re-decrypting on scroll.
+### People
+- @usernames, search by name or username, an invite link (`nikkchat.com/u/<name>`) and its
+  QR code.
+- A phone number verifies the account. It is never searchable and never shown on a profile.
+- Blocking.
 
 ### Collections
-- Organize media into **public** or **private** collections.
-- Share collections via **link or QR code**.
-- Add to a collection from any chat with one tap.
+- Save photos and videos from any chat into a collection.
+- Keep a collection private or make it public. Public ones show on your profile.
 
-### Distribution
-- **PWA-first** — no app store. Installs on Android, iOS, and desktop directly from the browser.
-- **Service worker** with offline fallback for the chat list.
-- Custom **install prompt** with platform-aware copy.
+### Accounts
+- Email and password, with the phone number verified by SMS at sign-up; Google and Microsoft
+  sign-in.
+- Password reset by email link or by SMS code.
+- New passwords are checked against known leaks through Have I Been Pwned, without sending
+  the password.
+- Changing the email or password, or deleting the account, asks for the password again.
+- Sign out of every device at once.
+
+### Media
+- Photos are redrawn as WebP in the browser before they upload, which leaves the location
+  and camera details behind. A setting adds a second metadata pass.
+- Avatar crop, a lightbox and a media viewer with swipe, save to device.
+
+### Install
+- Installs from the browser on iPhone, Android and desktop. No app store.
+- A service worker caches the app shell, and new versions install themselves.
+- An install prompt with the steps for each platform.
+
+## What it doesn't do yet
+
+- **End-to-end encryption.** Messages and media are encrypted in transit and at rest, not
+  end to end.
+- **Notifications while the app is closed.**
+- **A relay (TURN) server**, so a call can fail on a network that blocks direct connections.
+- **Group chats.**
 
 ## Architecture
 
@@ -117,37 +132,50 @@ minimal — there's no public feed, no follower count, no algorithm. Just people
 flowchart LR
     subgraph Client["Client (PWA)"]
       UI["React 19 + Vite + Tailwind 4"]
-      Crypto["Web Crypto<br/>AES-256-GCM"]
+      Media["Photo re-encode<br/>(canvas to WebP)"]
       WebRTC["WebRTC peer<br/>connection"]
-      SW["Service Worker<br/>offline fallback"]
+      SW["Service worker<br/>app shell cache"]
     end
 
-    subgraph Firebase["Firebase backend"]
-      Auth["Auth<br/>(Email + OAuth + Phone)"]
-      Firestore["Firestore<br/>(messages, users, collections)"]
-      Storage["Cloud Storage<br/>(encrypted blobs)"]
-      RTDB["Realtime DB<br/>(presence, typing, calls)"]
-      Functions["Cloud Functions<br/>(transactional emails)"]
+    subgraph Firebase["Firebase"]
+      Auth["Auth<br/>(email, Google, Microsoft, SMS check)"]
+      Firestore["Firestore<br/>(users, chats, messages, collections)"]
+      Storage["Cloud Storage<br/>(media files)"]
+      RTDB["Realtime Database<br/>(presence, typing, call setup)"]
+      Functions["Cloud Functions<br/>(account emails)"]
     end
 
-    UI --> Crypto --> Storage
+    UI --> Media --> Storage
     UI --> Firestore
     UI --> Auth
     UI --> RTDB
-    WebRTC <-.signaling.-> RTDB
+    WebRTC <-.call setup.-> RTDB
     Functions --> Auth
     SW --> UI
 ```
 
 **Why this stack**
 
-- **Firebase** handles auth, persistence, and signalling without me running infra. Firestore's
-  realtime listeners give me reactive UI for free; RTDB's lower latency is perfect for typing
-  and presence; Storage is the dumb-bytes layer for encrypted blobs.
-- **WebRTC over RTDB signalling** keeps the call setup peer-to-peer — the Firebase stack only
-  exchanges SDP offers/answers, never the call media.
-- **PWA** beats native app stores for solo dev velocity: one codebase, instant updates, no review
-  cycles, installable on every platform.
+- **Firebase** handles auth, persistence and call setup without me running servers.
+  Firestore's realtime listeners give me a reactive chat list; Realtime Database's lower
+  latency and `onDisconnect` suit typing and presence; Storage holds the media files.
+- **Security rules are the backend.** With no server of my own in front of the data, the
+  rules decide who can read and write what, so they are written to be strict and they are
+  tested.
+- **WebRTC with Realtime Database for call setup** keeps calls device to device. Firebase
+  only exchanges the offer, the answer and the connection candidates, never the call media.
+- **A PWA** beats native app stores for a solo developer: one codebase, instant updates, no
+  review cycles, installable on every platform.
+
+## How it's checked
+
+- **120 rule checks** against the Firebase emulators, as three accounts: two who share a chat
+  and one who doesn't. Each line is something the rules must allow or refuse.
+- **A two-browser run of the real screens**: sign in, start a chat, send, read, react, send a
+  photo, save it to a collection, call, block, delete the chat, delete the account. A single
+  "permission denied" in either browser fails the run.
+- The site and the app are looked at in a real browser at phone, tablet and desktop widths,
+  with worst-case data: long names, empty lists, missing photos, thousands of items.
 
 ## Tech stack
 
@@ -156,29 +184,29 @@ flowchart LR
 | **UI** | React 19, Vite 8, Tailwind CSS 4 |
 | **Routing** | React Router 7 |
 | **State** | React Context + custom hooks |
-| **Auth** | Firebase Auth (Email, Google, Apple, Microsoft, Phone) |
+| **Auth** | Firebase Auth (email and password, Google, Microsoft, SMS verification) |
 | **Database** | Firestore + Firebase Realtime Database |
 | **Storage** | Firebase Cloud Storage |
-| **Crypto** | Web Crypto API (AES-256-GCM) |
-| **Calls** | WebRTC peer-to-peer |
-| **Media** | Sharp (server-side thumbnails), exifr (metadata strip) |
-| **PWA** | vite-plugin-pwa, custom service worker |
-| **Backend functions** | Firebase Cloud Functions (Node 20) |
+| **Calls** | WebRTC, device to device |
+| **Media** | Canvas re-encode to WebP, exifr (metadata), react-easy-crop (avatar) |
+| **PWA** | vite-plugin-pwa (Workbox service worker) |
+| **Backend functions** | Firebase Cloud Functions, Resend for account emails |
 | **Hosting** | Firebase Hosting + custom domain ([nikkchat.com](https://nikkchat.com)) |
-| **Tooling** | ESLint 9, patch-package, Tailwind CLI |
+| **Type** | Hanken Grotesk, self-hosted |
+| **Tooling** | ESLint 9, patch-package, Firebase emulators for the rule tests |
 
 ## Documentation
 
 This repository contains design notes about the project. The source itself is private.
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system overview, data flow, why each stack choice
-- [`docs/SECURITY.md`](docs/SECURITY.md) — encryption model, threat model, what NikkChat does and doesn't protect against
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — shipped features and what's next
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): system overview, data model, how a message, a photo and a call travel
+- [`docs/SECURITY.md`](docs/SECURITY.md): what NikkChat protects, who it doesn't protect against, and the access rules
+- [`docs/ROADMAP.md`](docs/ROADMAP.md): what's shipped and what's next
 
 ## Try it
 
 The latest version is always live at **[nikkchat.com](https://nikkchat.com)**. Sign in or
-create an account to use it. On mobile, "Add to Home Screen" turns it into a real app.
+create an account to use it. On a phone, "Add to Home Screen" turns it into an app.
 
 ## Hire / collaborate
 
